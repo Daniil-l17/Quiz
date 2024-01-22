@@ -1,13 +1,13 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { questions } from './game';
 
 interface isd {
-  setRes: () => void,
-  setStep: () => void,
-  res: number
+  setRes: (num: number) => void;
+  setStep: (num: number) => void;
+  res: number;
 }
 
-function Result({ setRes, setStep, res }:isd) {
+const Result = ({ setRes, setStep, res }: isd) => {
   return (
     <div className="result">
       <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" />
@@ -16,14 +16,14 @@ function Result({ setRes, setStep, res }:isd) {
       </h2>
       <button
         onClick={() => {
-          setStep(0) 
-          setRes(0)
+          setStep(0);
+          setRes(0);
         }}>
         Попробовать снова
       </button>
     </div>
   );
-}
+};
 
 interface inf {
   infClick: (index: number) => void;
@@ -35,7 +35,7 @@ interface inf {
   step: number;
 }
 
-function Game({quiz, step, infClick }: inf) {
+const Game = ({ quiz, step, infClick }: inf) => {
   const isExsict = Math.round((step / questions.length) * 100);
 
   return (
@@ -53,7 +53,7 @@ function Game({quiz, step, infClick }: inf) {
       </>
     </>
   );
-}
+};
 
 function App() {
   const [step, setStep] = useState(0);
@@ -62,15 +62,15 @@ function App() {
 
   const infClick = (id: number) => {
     setStep(step + 1);
-    if (id === quiz.correct) setRes(res + 1);
+    if (id === quiz.correct) setRes(prev => prev + 1);
   };
 
   return (
     <>
       <div className="App">
         <h1 style={{ marginBottom: 30, textAlign: 'center' }}>React Quiz</h1>
-        {questions.length > step ? (
-          <Game infClick={infClick}step={step} quiz={quiz} />
+        {step < questions.length ? (
+          <Game infClick={infClick} step={step} quiz={quiz} />
         ) : (
           <Result setRes={setRes} res={res} setStep={setStep} />
         )}
